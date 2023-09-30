@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Vanila JS Todo List</title>
+
+    </head>
+    <body>
+        <div id="app">
+            <h1>Vanila JS Todo List</h1>
+            <ul id="todo-list"></ul>
+
+            <form id="todo-form">
+                <input type="text" id="todo-input" placeholder="Enter a todo item">
+                <button type="submit">Add</button>
+            </form>
+        </div>     
+        
+        <script>
+            // Get DOM Elements
+            const todolist = document.querySelector('#todo-list');
+            const form = document.querySelector('#todo-form');
+            const input = document.querySelector('#todo-input');
+            
+            var todoData = [];
+
+            const renderTodo = (todo) => {
+                const li = document.createElement('li');
+                li.innerHTML = todo;
+                todolist.appendChild(li);
+            }
+            
+            const addTodo = (todo) => {
+                todoData.push(todo);
+                localStorage.setItem('todoData', JSON.stringify(todoData));
+                renderTodo(todo);
+            }
+
+            form.onsubmit = (e) => {
+                e.preventDefault();
+                addTodo(input.value);
+                input.value = '';
+            }
+
+            const getTodos = () => {
+                const todos = localStorage.getItem('todoData');
+                if (todos) {
+                    todoData = JSON.parse(todos);
+
+                    todoData.forEach(todo => {
+                        renderTodo(todo);
+                    });
+                }
+            }
+
+            window.onload = () => {
+                getTodos();
+            }
+
+        </script>
+    </body>
+</html>
